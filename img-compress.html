@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISMA AI Media Suite - Professional Image & Document Conversion</title>
+    <meta name="description" content="Transform your media with AI-powered compression and conversion tools. Optimize images and convert documents to PDF in seconds.">
+    <meta name="keywords" content="image compression, PDF conversion, AI media tools, document converter, image optimizer">
+    <meta name="author" content="ISMA Technologies">
+    <meta property="og:title" content="ISMA AI Media Suite">
+    <meta property="og:description" content="AI-powered media conversion platform for images and documents">
+    <meta property="og:type" content="website">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+    
+    <!-- External CSS Libraries -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- External JS Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+            --secondary-gradient: linear-gradient(135deg, #3B82F6 0%, #2DD4BF 100%);
+            --accent-gradient: linear-gradient(135deg, #F43F5E 0%, #EC4899 100%);
+            --bg-gradient: linear-gradient(160deg, #0F172A 0%, #1E293B 100%);
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0F172A;
+            color: #F8FAFC;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .gradient-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-image: var(--primary-gradient);
+        }
+        
+        .accent-gradient-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-image: var(--accent-gradient);
+        }
+        
+        .btn-primary {
+            background-image: var(--primary-gradient);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+        }
+        
+        .btn-secondary {
+            background-image: var(--secondary-gradient);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+        }
+        
+        .feature-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+            border-color: rgba(99, 102, 241, 0.5);
+        }
+        
+        .tool-container {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+        }
+        
+        .glow {
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5), 0 0 30px rgba(99, 102, 241, 0.3), 0 0 45px rgba(99, 102, 241, 0.1);
+        }
+        
+        .testimonial-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .hero-blob {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: -1;
+            opacity: 0.15;
+        }
+        
+        .hero-blob-1 {
+            background: #6366F1;
+            top: -300px;
+            right: -200px;
+        }
+        
+        .hero-blob-2 {
+            background: #3B82F6;
+            bottom: -300px;
+            left: -200px;
+        }
+        
+        .grid-pattern {
+            background-image: 
+                linear-gradient(rgba(30, 41, 59, 0.3) 1px, transparent 1px), 
+                linear-gradient(90deg, rgba(30, 41, 59, 0.3) 1px, transparent 1px);
+            background-size: 20px 20px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            opacity: 0.2;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1E293B;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background-image: var(--primary-gradient);
+            border-radius: 10px;
+        }
+        
+        /* Custom range slider */
+        input[type=range] {
+            -webkit-appearance: none;
+            height: 7px;
+            background-image: var(--primary-gradient);
+            border-radius: 5px;
+        }
+        
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.8);
+            cursor: pointer;
+        }
+        
+        .ad-container {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Animation classes */
+        .float {
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .pulse {
+            animation: pulse 3s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(99, 102, 241, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+        }
+        
+        .shine-effect {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .shine-effect::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
+            transform: rotate(-30deg);
+            animation: shine 6s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: rotate(-30deg) translateX(-200%); }
+            100% { transform: rotate(-30deg) translateX(200%); }
+        }
+        
+        #preview-image, #comparison-container img {
+            max-height: 300px;
+            object-fit: contain;
+        }
+        
+        #comparison-container {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #comparison-slider {
+            position: absolute;
+            height: 100%;
+            width: 2px;
+            background: white;
+            top: 0;
+            left: 50%;
+            z-index: 10;
+            cursor: ew-resize;
+        }
+        
+        #comparison-slider::before {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: white;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        
+        #comparison-slider::after {
+            content: '⟷';
+            position: absolute;
+            color: #1E293B;
+            font-size: 16px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        /* Floating dots animation */
+        .dot {
+            position: absolute;
+            background-image: radial-gradient(circle, rgba(99, 102, 241, 0.7) 0%, rgba(99, 102, 241, 0) 70%);
+            border-radius: 50%;
+        }
+        
+        .toast-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background: rgba(99, 102, 241, 0.9);
+            color: white;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+            transform: translateY(-100px);
+            opacity: 0;
+            transition: all 0.4s ease-in-out;
+        }
+        
+        .toast-notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        /* PDF document preview */
+        #pdf-preview {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-height: 300px;
+            background: rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #94A3B8;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background elements -->
+    <div class="hero-blob hero-blob-1"></div>
+    <div class="hero-blob hero-blob-2"></div>
+    <div class="grid-pattern"></div>
+    
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-50 bg-opacity-80 bg-gray-900 backdrop-filter backdrop-blur-md border-b border-gray-800">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <span class="text-3xl">🧠</span>
+                    <h1 class="text-xl md:text-2xl font-bold gradient-text">ISMA AI Media Suite</h1>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="#features" class="text-gray-300 hover:text-white transition">Features</a>
+                    <a href="#image-tool" class="text-gray-300 hover:text-white transition">Image Compression</a>
+                    <a href="#pdf-tool" class="text-gray-300 hover:text-white transition">PDF Conversion</a>
+                    <a href="#testimonials" class="text-gray-300 hover:text-white transition">Testimonials</a>
+                </nav>
+                <div class="flex space-x-4">
+                    <button class="btn-primary px-4 py-2 rounded-full text-white font-medium">Get Started</button>
+                    <button class="md:hidden text-white text-xl">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="relative pt-20 pb-24 overflow-hidden">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+                        Transform Your Media with <span class="gradient-text">AI Power</span>
+                    </h1>
+                    <p class="text-gray-300 text-lg mb-8 max-w-lg">
+                        Supercharge your workflow with our cutting-edge AI tools. Compress images without losing quality and convert documents to PDF in seconds.
+                    </p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <a href="#image-tool" class="btn-primary px-8 py-4 rounded-full text-white font-semibold text-center">
+                            Compress Images
+                        </a>
+                        <a href="#pdf-tool" class="btn-secondary px-8 py-4 rounded-full text-white font-semibold text-center">
+                            Convert to PDF
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 relative">
+                    <div class="relative z-10 float shine-effect">
+                        <svg width="400" height="400" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#6366F1" />
+                                    <stop offset="100%" stop-color="#8B5CF6" />
+                                </linearGradient>
+                            </defs>
+                            <g transform="translate(250, 250)">
+                                <path d="M 125,0 A 125,125 0 0,1 62.5,108.3 A 125,125 0 0,1 -62.5,108.3 A 125,125 0 0,1 -125,0 A 125,125 0 0,1 -62.5,-108.3 A 125,125 0 0,1 62.5,-108.3 A 125,125 0 0,1 125,0 Z" 
+                                    fill="url(#heroGrad)" transform="scale(1.5)" />
+                                <circle cx="0" cy="0" r="120" fill="#0F172A" />
+                                <path d="M 0,-100 A 100,100 0 0,1 86.6,50 A 100,100 0 0,1 -86.6,50 A 100,100 0 0,1 0,-100 Z" 
+                                    fill="url(#heroGrad)" transform="rotate(0)">
+                                    <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="12s" repeatCount="indefinite" />
+                                </path>
+                            </g>
+                            <!-- AI nodes and connections -->
+                            <g>
+                                <circle cx="180" cy="180" r="10" fill="#6366F1" opacity="0.8" />
+                                <circle cx="240" cy="150" r="8" fill="#8B5CF6" opacity="0.8" />
+                                <circle cx="300" cy="200" r="12" fill="#3B82F6" opacity="0.8" />
+                                <circle cx="250" cy="260" r="9" fill="#2DD4BF" opacity="0.8" />
+                                <circle cx="190" cy="240" r="7" fill="#F43F5E" opacity="0.8" />
+                                
+                                <line x1="180" y1="180" x2="240" y2="150" stroke="#6366F1" stroke-width="2" opacity="0.6" />
+                                <line x1="240" y1="150" x2="300" y2="200" stroke="#8B5CF6" stroke-width="2" opacity="0.6" />
+                                <line x1="300" y1="200" x2="250" y2="260" stroke="#3B82F6" stroke-width="2" opacity="0.6" />
+                                <line x1="250" y1="260" x2="190" y2="240" stroke="#2DD4BF" stroke-width="2" opacity="0.6" />
+                                <line x1="190" y1="240" x2="180" y2="180" stroke="#F43F5E" stroke-width="2" opacity="0.6" />
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                        <div class="text-center">
+                            <h3 class="font-bold text-2xl text-white mb-2">AI-Powered</h3>
+                            <p class="text-blue-300">Next-Gen Media Processing</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Statistics -->
+            <div class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="p-6 feature-card rounded-xl">
+                    <h3 class="text-3xl font-bold gradient-text mb-2">2M+</h3>
+                    <p class="text-gray-400">Images Compressed</p>
+                </div>
+                <div class="p-6 feature-card rounded-xl">
+                    <h3 class="text-3xl font-bold gradient-text mb-2">500K+</h3>
+                    <p class="text-gray-400">PDFs Created</p>
+                </div>
+                <div class="p-6 feature-card rounded-xl">
+                    <h3 class="text-3xl font-bold gradient-text mb-2">98%</h3>
+                    <p class="text-gray-400">User Satisfaction</p>
+                </div>
+                <div class="p-6 feature-card rounded-xl">
+                    <h3 class="text-3xl font-bold gradient-text mb-2">80%</h3>
+                    <p class="text-gray-400">Avg. File Size Reduction</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Advertisement Space (Top) -->
+    <div class="container mx-auto px-4 mb-16">
+        <div class="ad-container p-4 rounded-lg text-center">
+            <div class="text-gray-400 mb-2 text-sm">ADVERTISEMENT</div>
+            <!-- Google AdSense Code -->
+            <div id="ad-placeholder-top" class="bg-gray-800 bg-opacity-50 h-24 flex items-center justify-center">
+                <span class="text-gray-500">Insert your AdSense Ad Unit ID here</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Features Section -->
+    <section id="features" class="py-16 relative">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Powerful <span class="gradient-text">AI Features</span></h2>
+                <p class="text-gray-300 max-w-2xl mx-auto">Our suite of intelligent tools revolutionizes how you work with media files, saving you time and enhancing quality.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="feature-card p-6 rounded-xl">
+                    <div class="text-4xl mb-4 text-indigo-400">
+                        <i class="fas fa-compress-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Smart Image Compression</h3>
+                    <p class="text-gray-300 mb-4">Reduce file sizes by up to 90% while preserving visual quality using our AI-powered algorithms.</p>
+                    <ul class="text-gray-400 space-y-2">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-400 mr-2"></i>
+                            Adjustable quality settings
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-400 mr-2"></i>
+                            Batch processing
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-400 mr-2"></i>
+                            Multiple format support
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card p-6 rounded-xl">
+                    <div class="text-4xl mb-4 text-blue-400">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Document to PDF Conversion</h3>
+                    <p class="text-gray-300 mb-4">Transform any text document into professional, shareable PDF files with perfect formatting.</p>
+                    <ul class="text-gray-400 space-y-2">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-400 mr-2"></i>
+                            Maintains formatting
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-400 mr-2"></i>
+                            Custom page settings
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-400 mr-2"></i>
+                            Password protection
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card p-6 rounded-xl">
+                    <div class="text-4xl mb-4 text-pink-400">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Lightning Fast Processing</h3>
+                    <p class="text-gray-300 mb-4">All processing happens directly in your browser - no uploads needed for maximum privacy and speed.</p>
+                    <ul class="text-gray-400 space-y-2">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-400 mr-2"></i>
+                            Client-side processing
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-400 mr-2"></i>
+                            Total privacy protection
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-400 mr-2"></i>
+                            No file size limits
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Image Compression Tool -->
+    <section id="image-tool" class="py-16 relative">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Image <span class="gradient-text">Compression</span> Tool</h2>
+                <p class="text-gray-300 max-w-2xl mx-auto">Optimize your images in seconds with our advanced AI compression algorithm.</p>
+            </div>
+            
+            <div class="tool-container p-8 rounded-xl max-w-4xl mx-auto">
+                <div class="mb-8 text-center">
+                    <label for="image-upload" class="btn-primary px-6 py-4 rounded-lg text-white font-medium inline-block cursor-pointer">
+                        <i class="fas fa-cloud-upload-alt mr-2"></i>Select Image to Compress
+                    </label>
+                    <input type="file" id="image-upload" class="hidden" accept="image/*">
+                    <p class="mt-3 text-gray-400 text-sm">Or drag and drop an image here</p>
+                </div>
+                
+                <div id="image-preview-container" class="hidden">
+                    <div class="mb-6">
+                        <div id="preview-container" class="flex justify-center mb-4">
+                            <img id="preview-image" class="max-w-full rounded-lg" alt="Preview">
+                        </div>
+                        
+                        <div class="mb-6">
+                            <div class="flex justify-between mb-2">
+                                <span>Compression Level:</span>
+                                <span id="compression-value">70%</span>
+                            </div>
+                            <input type="range" id="compression-level" class="w-full" min="0" max="100" value="70">
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label class="block text-gray-300 mb-2">Output Format:</label>
+                                <select id="output-format" class="w-full bg-gray-800 border border-gray-700 rounded-lg p-3 text-white">
+                                    <option value="jpeg">JPEG</option>
+                                    <option value="png">PNG</option>
+                                    <option value="webp">WebP</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-gray-300 mb-2">Original Size:</label>
+                                <div id="original-size" class="bg-gray-800 border border-gray-700 rounded-lg p-3">
+                                    Calculating...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="comparison-section" class="hidden mb-8">
+                        <h3 class="text-xl font-semibold mb-4">Before / After Comparison</h3>
+                        <div id="comparison-container" class="relative h-64 border border-gray-800 rounded-lg overflow-hidden">
+                            <div class="absolute top-0 left-0 h-full w-full">
+                                <img id="original-image" class="h-full w-full object-contain" alt="Original">
+                            </div>
+                            <div class="absolute top-0 left-0 h-full w-1/2 overflow-hidden">
+                                <img id="compressed-image" class="h-full w-full object-contain scale-x-2 origin-left" alt="Compressed">
+                            </div>
+                            <div id="comparison-slider"></div>
+                        </div>
+                        <div class="flex justify-between mt-4">
+                            <div class="text-sm text-gray-400">Original <span id="original-size-display"></span></div>
+                            <div class="text-sm text-gray-400">Compressed <span id="compressed-size-display" class="text-green-400"></span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                        <button id="compress-btn" class="btn-primary px-6 py-3 rounded-lg text-white font-medium">
+                            <i class="fas fa-compress-alt mr-2"></i>Compress Image
+                        </button>
+                        <button id="download-btn" class="btn-secondary px-6 py-3 rounded-lg text-white font-medium hidden">
+                            <i class="fas fa-download mr-2"></i>Download Compressed Image
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Advertisement Space (Middle) -->
+    <div class="container mx-auto px-4 mb-16">
+        <div class="ad-container p-4 rounded-lg text-center">
+            <div class="text-gray-400 mb-2 text-sm">ADVERTISEMENT</div>
+            <!-- Google AdSense Code -->
+            <div id="ad-placeholder-middle" class="bg-gray-800 bg-opacity-50 h-24 flex items-center justify-center">
+                <span class="text-gray-500">Insert your AdSense Ad Unit ID here</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- PDF Conversion Tool -->
+    <section id="pdf-tool" class="py-16 relative">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Document to <span class="accent-gradient-text">PDF</span> Converter</h2>
+                <p class="text-gray-300 max-w-2xl mx-auto">Convert any text document into a professionally formatted PDF file.</p>
+            </div>
+            
+            <div class="tool-container p-8 rounded-xl max-w-4xl mx-auto">
+                <div class="mb-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <div class="mb-6">
+                            <h3 class="text-xl font-semibold mb-4">Text Input</h3>
+                            <textarea id="pdf-text-input" class="w-full h-64 bg-gray-800 border border-gray-700 rounded-lg p-4 text-white" placeholder="Type or paste your text here to convert to PDF..."></textarea>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div>
+                                <label class="block text-gray-300 mb-2">Font Size:</label>
+                                <select id="pdf-font-size" class="w-full bg-gray-800 border border-gray-700 rounded-lg p-3 text-white">
+                                    <option value="10">10pt</option>
+                                    <option value="12" selected>12pt</option>
+                                    <option value="14">14pt</option>
+                                    <option value="16">16pt</option>
+                                    <option value="18">18pt</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-gray-300 mb-2">Font Family:</label>
+                                <select id="pdf-font-family" class="w-full bg-gray-800 border border-gray-700 rounded-lg p-3 text-white">
+                                    <option value="helvetica">Helvetica</option>
+                                    <option value="times">Times</option>
+                                    <option value="courier">Courier</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label class="block text-gray-300 mb-2">Document Title:</label>
+                            <input type="text" id="pdf-title" class="w-full bg-gray-800 border border-gray-700 rounded-lg p-3 text-white" placeholder="Enter document title...">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">PDF Preview</h3>
+                        <div id="pdf-preview" class="w-full h-64 rounded-lg">
+                            Your PDF preview will appear here after conversion
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <button id="generate-pdf-btn" class="btn-primary px-6 py-3 rounded-lg text-white font-medium">
+                        <i class="fas fa-file-pdf mr-2"></i>Generate PDF
+                    </button>
+                    <button id="download-pdf-btn" class="btn-secondary px-6 py-3 rounded-lg text-white font-medium hidden">
+                        <i class="fas fa-download mr-2"></i>Download PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Usage Statistics -->
+    <section class="py-16 relative bg-gray-900 bg-opacity-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Performance <span class="gradient-text">Metrics</span></h2>
+                <p class="text-gray-300 max-w-2xl mx-auto">Our tools deliver exceptional results across various performance indicators.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="feature-card p-6 rounded-xl">
+                    <h3 class="text-xl font-semibold mb-4">Compression Efficiency</h3>
+                    <canvas id="compression-chart" height="250"></canvas>
+                </div>
+                <div class="feature-card p-6 rounded-xl">
+                    <h3 class="text-xl font-semibold mb-4">User Activity</h3>
+                    <canvas id="activity-chart" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonials -->
+    <section id="testimonials" class="py-16 relative">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">What Our <span class="gradient-text">Users</span> Say</h2>
+                <p class="text-gray-300 max-w-2xl mx-auto">Thousands of professionals trust our tools for their media conversion needs.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="testimonial-card p-6 rounded-xl">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center text-xl font-bold mr-4">JS</div>
+                        <div>
+                            <h4 class="font-semibold">James Smith</h4>
+                            <div class="text-yellow-400 text-sm">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-300">
+                        "This tool saved me so much time! I was able to compress hundreds of product images for our e-commerce site without any noticeable quality loss."
+                    </p>
+                </div>
+                
+                <div class="testimonial-card p-6 rounded-xl">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-xl font-bold mr-4">AK</div>
+                        <div>
+                            <h4 class="font-semibold">Anna Kowalski</h4>
+                            <div class="text-yellow-400 text-sm">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-300">
+                        "The PDF converter is amazing! I use it daily in my work as a legal assistant. The documents look professional every time."
+                    </p>
+                </div>
+                
+                <div class="testimonial-card p-6 rounded-xl">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-pink-600 flex items-center justify-center text-xl font-bold mr-4">RM</div>
+                        <div>
+                            <h4 class="font-semibold">Robert Martinez</h4>
+                            <div class="text-yellow-400 text-sm">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-300">
+                        "I'm impressed with the privacy-first approach. All processing happens in my browser so my sensitive documents never leave my computer."
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Advertisement Space (Bottom) -->
+    <div class="container mx-auto px-4 mb-16">
+        <div class="ad-container p-4 rounded-lg text-center">
+            <div class="text-gray-400 mb-2 text-sm">ADVERTISEMENT</div>
+            <!-- Google AdSense Code -->
+            <div id="ad-placeholder-bottom" class="bg-gray-800 bg-opacity-50 h-24 flex items-center justify-center">
+                <span class="text-gray-500">Insert your AdSense Ad Unit ID here</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900 bg-opacity-70 pt-16 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <span class="text-2xl">🧠</span>
+                        <h3 class="text-xl font-bold gradient-text">ISMA AI Media Suite</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        Advanced AI-powered tools for image compression and document conversion.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-blue-400 hover:text-blue-300"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-blue-400 hover:text-blue-300"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-blue-400 hover:text-blue-300"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-blue-400 hover:text-blue-300"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Tools</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#image-tool" class="hover:text-white transition">Image Compression</a></li>
+                        <li><a href="#pdf-tool" class="hover:text-white transition">PDF Conversion</a></li>
+                        <li><a href="#" class="hover:text-white transition">Batch Processing</a></li>
+                        <li><a href="#" class="hover:text-white transition">API Access</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition">Help Center</a></li>
+                        <li><a href="#" class="hover:text-white transition">API Documentation</a></li>
+                        <li><a href="#" class="hover:text-white transition">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition">Terms of Service</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact Us</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-2"></i>
+                            <span>support@isma-ai.com</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone-alt mt-1 mr-2"></i>
+                            <span>+1 (555) 123-4567</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-2"></i>
+                            <span>123 AI Boulevard, Tech Valley, CA 94043</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 text-sm">
+                <p>&copy; 2023 ISMA AI Media Suite. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Toast Notification -->
+    <div id="toast" class="toast-notification">
+        <span id="toast-message"></span>
+    </div>
+    
+    <!-- Scripts -->
+    <script>
+        // Initialize floating dots
+        document.addEventListener('DOMContentLoaded', () => {
+            // Create floating dots
+            for (let i = 0; i < 15; i++) {
+                createFloatingDot();
+            }
+            
+            // Initialize charts
+            initCharts();
+            
+            // Initialize Image Tool
+            initImageTool();
+            
+            // Initialize PDF Tool
+            initPdfTool();
+        });
+        
+        function createFloatingDot() {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            
+            const size = Math.random() * 20 + 5;
+            const posX = Math.random() * window.innerWidth;
+            const posY = Math.random() * window.innerHeight;
+            const duration = Math.random() * 20 + 10;
+            const delay = Math.random() * 5;
+            
+            dot.style.width = `${size}px`;
+            dot.style.height = `${size}px`;
+            dot.style.left = `${posX}px`;
+            dot.style.top = `${posY}px`;
+            dot.style.opacity = (Math.random() * 0.5 + 0.1).toString();
+            
+            document.body.appendChild(dot);
+            
+            animateDot(dot, duration, delay);
+        }
+        
+        function animateDot(dot, duration, delay) {
+            const startX = parseFloat(dot.style.left);
+            const startY = parseFloat(dot.style.top);
+            const targetX = startX + (Math.random() * 200 - 100);
+            const targetY = startY + (Math.random() * 200 - 100);
+            const startTime = Date.now() + delay * 1000;
+            
+            function moveDot() {
+                const currentTime = Date.now();
+                if (currentTime < startTime) {
+                    requestAnimationFrame(moveDot);
+                    return;
+                }
+                
+                const elapsed = (currentTime - startTime) / 1000;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                const easeProgress = 0.5 - Math.cos(progress * Math.PI) / 2;
+                
+                const currentX = startX + (targetX - startX) * easeProgress;
+                const currentY = startY + (targetY - startY) * easeProgress;
+                
+                dot.style.left = `${currentX}px`;
+                dot.style.top = `${currentY}px`;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(moveDot);
+                } else {
+                    // Start a new animation when this one completes
+                    setTimeout(() => {
+                        dot.style.left = `${Math.random() * window.innerWidth}px`;
+                        dot.style.top = `${Math.random() * window.innerHeight}px`;
+                        animateDot(dot, Math.random() * 20 + 10, 0);
+                    }, 100);
+                }
+            }
+            
+            requestAnimationFrame(moveDot);
+        }
+        
+        function initCharts() {
+            // Compression Efficiency Chart
+            const compressionCtx = document.getElementById('compression-chart').getContext('2d');
+            new Chart(compressionCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['JPEG', 'PNG', 'GIF', 'WebP', 'SVG'],
+                    datasets: [{
+                        label: 'Average Compression Ratio',
+                        data: [68, 72, 65, 85, 95],
+                        backgroundColor: [
+                            'rgba(99, 102, 241, 0.7)',
+                            'rgba(139, 92, 246, 0.7)',
+                            'rgba(59, 130, 246, 0.7)',
+                            'rgba(45, 212, 191, 0.7)',
+                            'rgba(244, 63, 94, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgb(99, 102, 241)',
+                            'rgb(139, 92, 246)',
+                            'rgb(59, 130, 246)',
+                            'rgb(45, 212, 191)',
+                            'rgb(244, 63, 94)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#F8FAFC'
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                color: '#94A3B8'
+                            },
+                            grid: {
+                                color: 'rgba(148, 163, 184, 0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#94A3B8'
+                            },
+                            grid: {
+                                color: 'rgba(148, 163, 184, 0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // User Activity Chart
+            const activityCtx = document.getElementById('activity-chart').getContext('2d');
+            new Chart(activityCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [
+                        {
+                            label: 'Image Compressions',
+                            data: [65000, 78000, 90000, 105000, 142000, 168000],
+                            borderColor: 'rgba(99, 102, 241, 1)',
+                            backgroundColor: 'rgba(99, 102, 241, 0.2)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'PDF Conversions',
+                            data: [32000, 48000, 53000, 61000, 75000, 89000],
+                            borderColor: 'rgba(244, 63, 94, 1)',
+                            backgroundColor: 'rgba(244, 63, 94, 0.2)',
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#F8FAFC'
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#94A3B8',
+                                callback: function(value) {
+                                    return value >= 1000 ? value / 1000 + 'k' : value;
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(148, 163, 184, 0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#94A3B8'
+                            },
+                            grid: {
+                                color: 'rgba(148, 163, 184, 0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Image Tool Functionality
+        function initImageTool() {
+            const imageUpload = document.getElementById('image-upload');
+            const previewContainer = document.getElementById('image-preview-container');
+            const previewImage = document.getElementById('preview-image');
+            const originalSize = document.getElementById('original-size');
+            const compressionLevel = document.getElementById('compression-level');
+            const compressionValue = document.getElementById('compression-value');
+            const compressBtn = document.getElementById('compress-btn');
+            const downloadBtn = document.getElementById('download-btn');
+            const comparisonSection = document.getElementById('comparison-section');
+            const comparisonContainer = document.getElementById('comparison-container');
+            const originalImage = document.getElementById('original-image');
+            const compressedImage = document.getElementById('compressed-image');
+            const comparisonSlider = document.getElementById('comparison-slider');
+            const originalSizeDisplay = document.getElementById('original-size-display');
+            const compressedSizeDisplay = document.getElementById('compressed-size-display');
+            
+            let originalImageData = null;
+            let compressedImageData = null;
+            let originalFile = null;
+            
+            // Drag and drop handling
+            const dropArea = document.querySelector('.tool-container');
+            
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, unhighlight, false);
+            });
+            
+            function highlight() {
+                dropArea.classList.add('border-indigo-500', 'bg-indigo-900', 'bg-opacity-10');
+            }
+            
+            function unhighlight() {
+                dropArea.classList.remove('border-indigo-500', 'bg-indigo-900', 'bg-opacity-10');
+            }
+            
+            dropArea.addEventListener('drop', handleDrop, false);
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                
+                if (files.length) {
+                    handleFiles(files);
+                }
+            }
+            
+            function handleFiles(files) {
+                if (files[0] && files[0].type.match('image.*')) {
+                    originalFile = files[0];
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        previewImage.src = e.target.result;
+                        originalImageData = e.target.result;
+                        previewContainer.classList.remove('hidden');
+                        originalSize.textContent = formatBytes(originalFile.size);
+                        
+                        // Reset the comparison section
+                        comparisonSection.classList.add('hidden');
+                        downloadBtn.classList.add('hidden');
+                        
+                        showToast('Image loaded successfully!');
+                    };
+                    
+                    reader.readAsDataURL(originalFile);
+                } else {
+                    showToast('Please select a valid image file.', true);
+                }
+            }
+            
+            // File input change handler
+            imageUpload.addEventListener('change', function() {
+                if (this.files.length) {
+                    handleFiles(this.files);
+                }
+            });
+            
+            // Compression level slider change
+            compressionLevel.addEventListener('input', function() {
+                compressionValue.textContent = this.value + '%';
+            });
+            
+            // Compress button click handler
+            compressBtn.addEventListener('click', function() {
+                if (!originalImageData) {
+                    showToast('Please select an image first.', true);
+                    return;
+                }
+                
+                const quality = parseInt(compressionLevel.value) / 100;
+                const format = document.getElementById('output-format').value;
+                
+                compressImage(originalImageData, quality, format).then(result => {
+                    compressedImageData = result.dataUrl;
+                    
+                    // Update comparison view
+                    originalImage.src = originalImageData;
+                    compressedImage.src = compressedImageData;
+                    originalSizeDisplay.textContent = `(${formatBytes(originalFile.size)})`;
+                    compressedSizeDisplay.textContent = `(${formatBytes(result.size)} - ${Math.round((1 - (result.size / originalFile.size)) * 100)}% smaller)`;
+                    
+                    comparisonSection.classList.remove('hidden');
+                    downloadBtn.classList.remove('hidden');
+                    
+                    // Initialize comparison slider
+                    initComparisonSlider();
+                    
+                    showToast('Image compressed successfully!');
+                });
+            });
+            
+            // Download button click handler
+            downloadBtn.addEventListener('click', function() {
+                if (!compressedImageData) return;
+                
+                const format = document.getElementById('output-format').value;
+                const link = document.createElement('a');
+                link.href = compressedImageData;
+                link.download = `compressed_image.${format === 'jpeg' ? 'jpg' : format}`;
+                link.click();
+                
+                showToast('Download started!');
+            });
+            
+            // Initialize comparison slider
+            function initComparisonSlider() {
+                let isDown = false;
+                
+                comparisonSlider.addEventListener('mousedown', () => {
+                    isDown = true;
+                });
+                
+                window.addEventListener('mouseup', () => {
+                    isDown = false;
+                });
+                
+                window.addEventListener('mousemove', (e) => {
+                    if (!isDown) return;
+                    handleSliderMove(e);
+                });
+                
+                comparisonSlider.addEventListener('touchstart', (e) => {
+                    isDown = true;
+                });
+                
+                window.addEventListener('touchend', () => {
+                    isDown = false;
+                });
+                
+                window.addEventListener('touchmove', (e) => {
+                    if (!isDown) return;
+                    handleSliderMove(e.touches[0]);
+                });
+                
+                function handleSliderMove(e) {
+                    const containerRect = comparisonContainer.getBoundingClientRect();
+                    const x = e.clientX - containerRect.left;
+                    const percent = Math.max(0, Math.min(100, x / containerRect.width * 100));
+                    
+                    compressedImage.closest('div').style.width = `${percent}%`;
+                    compressedImage.style.transform = `scaleX(${100 / percent})`;
+                    comparisonSlider.style.left = `${percent}%`;
+                }
+            }
+            
+            // Helper function to compress image
+            function compressImage(dataUrl, quality, format) {
+                return new Promise((resolve) => {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        
+                        let mimeType;
+                        switch(format) {
+                            case 'png': mimeType = 'image/png'; break;
+                            case 'webp': mimeType = 'image/webp'; break;
+                            default: mimeType = 'image/jpeg'; break;
+                        }
+                        
+                        const compressedDataUrl = canvas.toDataURL(mimeType, quality);
+                        
+                        // Calculate size of compressed image
+                        const binStr = atob(compressedDataUrl.split(',')[1]);
+                        const bytes = new Uint8Array(binStr.length);
+                        for (let i = 0; i < binStr.length; i++) {
+                            bytes[i] = binStr.charCodeAt(i);
+                        }
+                        const size = bytes.length;
+                        
+                        resolve({
+                            dataUrl: compressedDataUrl,
+                            size: size
+                        });
+                    };
+                    img.src = dataUrl;
+                });
+            }
+            
+            // Helper function to format bytes
+            function formatBytes(bytes, decimals = 2) {
+                if (bytes === 0) return '0 Bytes';
+                
+                const k = 1024;
+                const dm = decimals < 0 ? 0 : decimals;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+            }
+        }
+        
+        // PDF Tool Functionality
+        function initPdfTool() {
+            const textInput = document.getElementById('pdf-text-input');
+            const fontSizeSelect = document.getElementById('pdf-font-size');
+            const fontFamilySelect = document.getElementById('pdf-font-family');
+            const titleInput = document.getElementById('pdf-title');
+            const generateBtn = document.getElementById('generate-pdf-btn');
+            const downloadBtn = document.getElementById('download-pdf-btn');
+            const pdfPreview = document.getElementById('pdf-preview');
+            
+            let generatedPdf = null;
+            
+            generateBtn.addEventListener('click', function() {
+                const text = textInput.value.trim();
+                
+                if (!text) {
+                    showToast('Please enter some text to convert to PDF.', true);
+                    return;
+                }
+                
+                const fontSize = parseInt(fontSizeSelect.value);
+                const fontFamily = fontFamilySelect.value;
+                const title = titleInput.value || 'Document';
+                
+                generatePdf(text, fontSize, fontFamily, title).then(pdfData => {
+                    generatedPdf = pdfData;
+                    
+                    // Update preview
+                    pdfPreview.innerHTML = '';
+                    const iframe = document.createElement('iframe');
+                    iframe.style.width = '100%';
+                    iframe.style.height = '100%';
+                    iframe.style.border = 'none';
+                    pdfPreview.appendChild(iframe);
+                    
+                    const blob = new Blob([pdfData], { type: 'application/pdf' });
+                    const url = URL.createObjectURL(blob);
+                    iframe.src = url;
+                    
+                    downloadBtn.classList.remove('hidden');
+                    showToast('PDF generated successfully!');
+                });
+            });
+            
+            downloadBtn.addEventListener('click', function() {
+                if (!generatedPdf) return;
+                
+                const title = titleInput.value || 'document';
+                const blob = new Blob([generatedPdf], { type: 'application/pdf' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `${title.replace(/\s+/g, '_')}.pdf`;
+                link.click();
+                
+                showToast('Download started!');
+            });
+            
+            // Helper function to generate PDF
+            async function generatePdf(text, fontSize, fontFamily, title) {
+                const { PDFDocument, rgb, StandardFonts } = PDFLib;
+                
+                // Create a new PDF document
+                const pdfDoc = await PDFDocument.create();
+                
+                // Add a new page
+                const page = pdfDoc.addPage([595.28, 841.89]); // A4 size
+                
+                // Get the standard font
+                let font;
+                switch (fontFamily) {
+                    case 'helvetica': font = await pdfDoc.embedFont(StandardFonts.Helvetica); break;
+                    case 'times': font = await pdfDoc.embedFont(StandardFonts.TimesRoman); break;
+                    case 'courier': font = await pdfDoc.embedFont(StandardFonts.Courier); break;
+                    default: font = await pdfDoc.embedFont(StandardFonts.Helvetica); break;
+                }
+                
+                const titleSize = fontSize + 4;
+                const lineHeight = fontSize * 1.2;
+                const marginTop = 50;
+                const marginLeft = 50;
+                const marginRight = 50;
+                const pageWidth = page.getWidth();
+                const maxWidth = pageWidth - marginLeft - marginRight;
+                
+                // Draw the title
+                page.drawText(title, {
+                    x: marginLeft,
+                    y: page.getHeight() - marginTop,
+                    size: titleSize,
+                    font: font,
+                    color: rgb(0, 0, 0)
+                });
+                
+                // Process and draw text
+                const words = text.split(' ');
+                let line = '';
+                let y = page.getHeight() - marginTop - titleSize - 20;
+                
+                for (const word of words) {
+                    const testLine = line + (line ? ' ' : '') + word;
+                    const textWidth = font.widthOfTextAtSize(testLine, fontSize);
+                    
+                    if (textWidth > maxWidth) {
+                        page.drawText(line, {
+                            x: marginLeft,
+                            y: y,
+                            size: fontSize,
+                            font: font,
+                            color: rgb(0, 0, 0)
+                        });
+                        
+                        line = word;
+                        y -= lineHeight;
+                        
+                        // Create new page if needed
+                        if (y < marginTop) {
+                            const newPage = pdfDoc.addPage([595.28, 841.89]);
+                            y = newPage.getHeight() - marginTop;
+                        }
+                    } else {
+                        line = testLine;
+                    }
+                }
+                
+                // Draw the last line
+                if (line) {
+                    page.drawText(line, {
+                        x: marginLeft,
+                        y: y,
+                        size: fontSize,
+                        font: font,
+                        color: rgb(0, 0, 0)
+                    });
+                }
+                
+                // Save the PDF
+                const pdfBytes = await pdfDoc.save();
+                return pdfBytes;
+            }
+        }
+        
+        // Toast notification
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            
+            toast.style.backgroundColor = isError ? '#EF4444' : 'rgba(99, 102, 241, 0.9)';
+            toastMessage.textContent = message;
+            
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
